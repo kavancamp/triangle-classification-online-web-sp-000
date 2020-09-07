@@ -1,42 +1,30 @@
 class Triangle
-  # write code here\
+  attr_accessor :a, :b, :c
+  def initialize(a, b, c)
+    @a=a
+    @b=b
+    @c=c
+  end
 
-  def initialize(s1, s2, s3)
-
-
-    if s1 >= (s2 + s3) || s2 >= (s1 + s3) || s3 >= (s1 + s2)
-      raise TriangleError
-    end
-
-    if s1 <= 0 || s2 <= 0 ||s3 <= 0
-      raise TriangleError
-    end
-
-    if s1 == nil || s2 == nil ||s3 == nil
-      raise TriangleError
-    end
-
-    @s1 = s1
-    @s2 = s2
-    @s3 = s3
+  def valid?
+    result = [@a, @b, @c].all? {|side| side > 0}
+    result && (@a+@b > @c) && (@a+@c > @b) && (@b+@c > @a)
   end
 
   def kind
-    if @s1 == @s2 && @s1 == @s3
-      return :equilateral
-    elsif @s1 == @s2 || @s2 == @s3 || @s3 == @s1
-      return :isosceles
+    if !valid?
+      raise TriangleError
+    elsif @a==@b && @b==@c
+      result = :equilateral
+    elsif @a==@b || @a==@c || @b==@c
+      result = :isosceles
     else
-      return :scalene
+      result = :scalene
     end
+    result
   end
 
 end
 
-
-
 class TriangleError < StandardError
-  def message
-    "This is not a valid triangle."
-  end
 end
